@@ -220,7 +220,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* ปรับแต่ง Mobile Offcanvas Menu */
         .mobile-menu-drawer {
             border-radius: 0 20px 20px 0;
         }
@@ -234,7 +233,6 @@
     <nav class="navbar-clean">
         <div class="container d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-2">
-                <!-- ปุ่มเปิดเมนูเฉพาะหน้าจอมือถือ -->
                 <button class="icon-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuOffcanvas" aria-controls="mobileMenuOffcanvas">
                     <i class="fa-solid fa-bars" style="font-size: 0.9rem;"></i>
                 </button>
@@ -243,7 +241,6 @@
                 </a>
             </div>
 
-            <!-- เมนูสำหรับจอคอมพิวเตอร์ (Desktop) -->
             <div class="d-none d-lg-flex align-items-center gap-1">
                 <button class="nav-pill-btn active" onclick="switchTab('home')">หน้าแรก</button>
                 <button class="nav-pill-btn" onclick="switchTab('shop')">สินค้าทั้งหมด</button>
@@ -256,7 +253,6 @@
                 <button class="nav-pill-btn" id="admin-tab-btn" style="display: none;" onclick="switchTab('admin')">แอดมิน</button>
             </div>
 
-            <!-- ปุ่มไอคอนขวา (กระดิ่ง ตะกร้า โปรไฟล์) -->
             <div class="d-flex align-items-center gap-2">
                 <button class="icon-btn position-relative" onclick="openNotiModal()" title="การแจ้งเตือน">
                     <i class="fa-regular fa-bell" style="font-size: 0.9rem;"></i>
@@ -282,7 +278,7 @@
         </div>
     </nav>
 
-    <!-- Offcanvas Menu สำหรับจอมือถือ (Mobile Drawer) -->
+    <!-- Offcanvas Menu สำหรับจอมือถือ -->
     <div class="offcanvas offcanvas-start mobile-menu-drawer" tabindex="-1" id="mobileMenuOffcanvas">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold text-primary" style="font-size: 1.1rem;"><i class="fa-solid fa-water me-1"></i> เมนูหลัก</h5>
@@ -465,8 +461,8 @@
                                 <input type="text" class="form-control form-control-sm" id="st-promptpay" placeholder="0812345678" required>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label text-secondary" style="font-size: 0.72rem;">LINE User ID</label>
-                                <input type="text" class="form-control form-control-sm" id="st-lineid" placeholder="U123456789...">
+                                <label class="form-label text-secondary" style="font-size: 0.72rem;">LINE User ID (ดึงอัตโนมัติผ่านระบบ)</label>
+                                <input type="text" class="form-control form-control-sm bg-light" id="st-lineid" readonly placeholder="ยังไม่ได้เชื่อมต่อ LINE">
                             </div>
                             <button type="submit" class="btn btn-outline-primary w-100 btn-sm py-1 rounded-pill" style="font-size: 0.8rem;">บันทึกการตั้งค่า</button>
                         </form>
@@ -561,7 +557,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-4">
                 <h4 class="fw-bold mb-2" style="font-size: 1.15rem;"><i class="fa-solid fa-store me-2 text-primary"></i>ลงทะเบียนเปิดร้านค้าใหม่</h4>
-                <p class="text-secondary small mb-3">กรอกชื่อร้านค้าและเบอร์พร้อมเพย์ส่วนตัวของท่าน เพื่อให้ลูกค้าโอนเงินเข้าบัญชีท่านโดยตรง</p>
+                <p class="text-secondary small mb-3">กรอกชื่อร้านค้าและเบอร์พร้อมเพย์ พร้อมกดเชื่อมต่อ LINE OA เพื่อรับแจ้งเตือนออเดอร์อัตโนมัติ</p>
                 <form id="register-store-form" onsubmit="handleRegisterStore(event)">
                     <div class="mb-3">
                         <label class="form-label small text-secondary">ชื่อร้านค้าของคุณ * (ตั้งแล้วเปลี่ยนไม่ได้)</label>
@@ -581,6 +577,20 @@
                             <input type="text" class="form-control" id="reg-store-bank" placeholder="กสิกรไทย">
                         </div>
                     </div>
+                    
+                    <!-- ส่วนปุ่มเชื่อมต่อ LINE ฝั่งร้านค้า (ขั้นตอนที่ 2) -->
+                    <div class="mb-3 p-3 bg-light rounded border">
+                        <label class="form-label small text-success fw-bold mb-1"><i class="fa-brands fa-line me-1"></i> เชื่อมต่อรับแจ้งเตือนผ่าน LINE (ขั้นตอนที่ 2)</label>
+                        <p class="text-secondary small mb-2" style="font-size: 0.72rem;">คลิกปุ่มด้านล่างเพื่อเชื่อมต่อ LINE OA ของระบบ และดึง UID อัตโนมัติโดยไม่ต้องกรอกเอง</p>
+                        <button type="button" class="btn btn-success w-100 btn-sm py-2 fw-semibold" onclick="simulateStoreLineConnect()">
+                            🟢 [ เชื่อมต่อแจ้งเตือนผ่าน LINE ]
+                        </button>
+                        <input type="hidden" id="reg-store-lineuid" required>
+                        <div id="reg-line-status" class="text-success small mt-2 fw-medium" style="font-size: 0.75rem; display: none;">
+                            <i class="fa-solid fa-circle-check me-1"></i> เชื่อมต่อ LINE สำเร็จ! (UID: <span id="display-store-uid"></span>)
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn-primary-warm w-100"><i class="fa-solid fa-check me-1"></i> ยืนยันการเปิดร้านค้า</button>
                 </form>
             </div>
@@ -648,6 +658,17 @@
                             <div class="mb-2">
                                 <label class="form-label text-secondary" style="font-size: 0.75rem;">รหัสไปรษณีย์ *</label>
                                 <input type="text" class="form-control form-control-sm" id="ship-zipcode" required placeholder="20150">
+                            </div>
+
+                            <!-- ส่วนเชื่อมต่อ LINE ฝั่งลูกค้า (ขั้นตอนที่ 2) -->
+                            <div class="mt-3 p-2 bg-light rounded border">
+                                <button type="button" class="btn btn-success w-100 btn-sm py-2 fw-semibold" style="font-size: 0.75rem;" onclick="simulateBuyerLineConnect()">
+                                    🟢 [ รับแจ้งเตือนสถานะ & เลขพัสดุผ่าน LINE ]
+                                </button>
+                                <input type="hidden" id="checkout-buyer-lineuid">
+                                <div id="buyer-line-status" class="text-success small mt-1 text-center fw-medium" style="font-size: 0.7rem; display: none;">
+                                    <i class="fa-solid fa-circle-check me-1"></i> ผูก LINE ลูกค้าสำเร็จแล้ว!
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -809,6 +830,23 @@
             }, 3500);
         }
 
+        // ขั้นตอนที่ 2: จำลองฟังก์ชันกดเชื่อมต่อ LINE ฝั่งร้านค้า
+        window.simulateStoreLineConnect = function() {
+            const fakeUid = "U_STORE_" + Math.random().toString(36).substring(2, 12);
+            document.getElementById('reg-store-lineuid').value = fakeUid;
+            document.getElementById('display-store-uid').innerText = fakeUid;
+            document.getElementById('reg-line-status').style.display = 'block';
+            showToast("เชื่อมต่อ LINE สำเร็จ! ระบบดึง UID เรียบร้อย");
+        }
+
+        // ขั้นตอนที่ 2: จำลองฟังก์ชันกดเชื่อมต่อ LINE ฝั่งลูกค้า
+        window.simulateBuyerLineConnect = function() {
+            const fakeBuyerUid = "U_BUYER_" + Math.random().toString(36).substring(2, 12);
+            document.getElementById('checkout-buyer-lineuid').value = fakeBuyerUid;
+            document.getElementById('buyer-line-status').style.display = 'block';
+            showToast("ผูก LINE ลูกค้าเรียบร้อยแล้ว");
+        }
+
         window.previewProductImage = function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -926,6 +964,11 @@
             const promptPay = document.getElementById('reg-store-promptpay').value;
             const accName = document.getElementById('reg-store-accname').value;
             const bank = document.getElementById('reg-store-bank').value;
+            const lineUserId = document.getElementById('reg-store-lineuid').value;
+
+            if (!lineUserId) {
+                return showToast("กรุณากดปุ่มเชื่อมต่อแจ้งเตือนผ่าน LINE ก่อนลงทะเบียน", "error");
+            }
 
             try {
                 const storeRef = doc(db, "stores", currentUser.email);
@@ -935,13 +978,13 @@
                     promptPay: promptPay,
                     accName: accName,
                     bank: bank,
-                    lineUserId: "",
+                    lineUserId: lineUserId,
                     createdAt: serverTimestamp()
                 });
 
                 await loadStoresCache();
                 registerStoreModalInstance.hide();
-                addNotification(currentUser.email, "เปิดร้านค้าสำเร็จ! พร้อมรับเงินโอนตรงจากลูกค้า");
+                addNotification(currentUser.email, "เปิดร้านค้าสำเร็จ! เชื่อมต่อ LINE แจ้งเตือนออเดอร์เรียบร้อย");
                 showToast("เปิดร้านค้าสำเร็จ!");
                 
                 const openShopTabBtn = document.getElementById('open-shop-tab-btn');
@@ -1025,7 +1068,7 @@
                     const data = storeDoc.data();
                     document.getElementById('st-name').value = data.storeName || '';
                     document.getElementById('st-promptpay').value = data.promptPay || '';
-                    document.getElementById('st-lineid').value = data.lineUserId || '';
+                    document.getElementById('st-lineid').value = data.lineUserId || 'ยังไม่ได้เชื่อมต่อ';
                     document.getElementById('setting-store-title').innerHTML = `จัดการร้านค้า: ${data.storeName || ''}`;
                 }
             } catch (e) { console.error(e); }
@@ -1037,8 +1080,7 @@
             try {
                 const storeRef = doc(db, "stores", currentUser.email);
                 await updateDoc(storeRef, {
-                    promptPay: document.getElementById('st-promptpay').value,
-                    lineUserId: document.getElementById('st-lineid').value
+                    promptPay: document.getElementById('st-promptpay').value
                 });
                 await loadStoresCache();
                 showToast("บันทึกข้อมูลร้านค้าเรียบร้อยแล้ว");
@@ -1397,6 +1439,8 @@
             document.getElementById('slip-image-url').value = '';
             document.getElementById('slip-preview-container').style.display = 'none';
             document.getElementById('payment-method-select').value = 'promptpay';
+            document.getElementById('checkout-buyer-lineuid').value = '';
+            document.getElementById('buyer-line-status').style.display = 'none';
             togglePaymentMethodView();
 
             paymentModalInstance.show();
@@ -1414,6 +1458,7 @@
             const zipcode = document.getElementById('ship-zipcode').value;
             const paymentMethod = document.getElementById('payment-method-select').value;
             const slipUrl = document.getElementById('slip-image-url').value;
+            const buyerLineUid = document.getElementById('checkout-buyer-lineuid').value;
 
             if (!name || !phone || !houseNo || !subdistrict || !district || !province || !zipcode) {
                 return showToast("กรุณากรอกข้อมูลที่อยู่จัดส่งช่องที่มีเครื่องหมาย * ให้ครบถ้วน", "error");
@@ -1438,8 +1483,9 @@
 
                 const shippingAddressData = { name, phone, houseNo, soi, streetMoo, subdistrict, district, province, zipcode };
 
-                await addDoc(collection(db, "orders"), {
+                const orderDocRef = await addDoc(collection(db, "orders"), {
                     buyerEmail: currentUser.email,
+                    buyerLineUid: buyerLineUid || "",
                     items: cart,
                     totalAmount: totalAmount,
                     shippingAddress: shippingAddressData,
@@ -1449,12 +1495,16 @@
                     createdAt: serverTimestamp()
                 });
 
+                // ขั้นตอนที่ 3: ระบบส่งแจ้งเตือนอัตโนมัติ (Trigger เมื่อเกิดเหตุการณ์สั่งซื้อใหม่ไปหา "ร้านค้า")
                 const notifiedSellers = new Set();
                 cart.forEach(item => {
                     if (item.sellerEmail && !notifiedSellers.has(item.sellerEmail)) {
                         notifiedSellers.add(item.sellerEmail);
                         const methodText = paymentMethod === 'cod' ? '📦 เก็บเงินปลายทาง (COD)' : '💸 โอนเงินผ่าน PromptPay แล้ว';
-                        addNotification(item.sellerEmail, `🔔 มีออเดอร์ใหม่! (${methodText}) จากลูกค้า ${currentUser.email}`);
+                        
+                        // จำลองข้อความ Push Message ยิงเข้า LINE และแจ้งเตือนในระบบ
+                        const lineMsgToStore = `🛒 มีคำสั่งซื้อใหม่!\nเลขออเดอร์: #${orderDocRef.id.substring(0, 6)}\nยอดเงิน: ${totalAmount.toLocaleString()} บาท\nลูกค้า: ${name} (${methodText})`;
+                        addNotification(item.sellerEmail, lineMsgToStore);
                     }
                 });
 
@@ -1778,26 +1828,37 @@
             modalInstance.show();
         }
 
+        // ขั้นตอนที่ 3: ระบบส่งแจ้งเตือนอัตโนมัติ (Trigger ไปหา "ลูกค้า" เมื่อร้านกรอกเลข Tracking)
         window.submitComprehensiveShipping = async function(e, orderId) {
             e.preventDefault();
             const carrier = document.getElementById('comp-carrier').value;
             const trackingNo = document.getElementById('comp-tracking').value;
 
             try {
-                await updateDoc(doc(db, "orders", orderId), { 
+                const orderRef = doc(db, "orders", orderId);
+                const orderSnap = await getDoc(orderRef);
+                const orderData = orderSnap.exists() ? orderSnap.data() : null;
+
+                await updateDoc(orderRef, { 
                     status: 'กำลังจัดส่ง',
                     carrier: carrier,
                     trackingNo: trackingNo
                 });
+
+                // ส่งแจ้งเตือนหาลูกค้าผ่าน LINE / ระบบกระดิ่ง
+                if (orderData && orderData.buyerEmail) {
+                    const lineMsgToBuyer = `📦 สินค้าของคุณถูกจัดส่งแล้ว!\nเลขพัสดุ: ${trackingNo} (${carrier})\nขอบคุณที่ใช้บริการ Marbo Market`;
+                    addNotification(orderData.buyerEmail, lineMsgToBuyer);
+                }
                 
                 const modalEl = document.getElementById('comprehensiveOrderModal');
                 bootstrap.Modal.getInstance(modalEl).hide();
                 
-                showToast("บันทึกเลขพัสดุและอัปเดตสถานะเรียบร้อย!");
+                showToast("บันทึกเลขพัสดุและส่งการแจ้งเตือนให้ลูกค้าเรียบร้อย!");
             } catch (error) {
                 showToast("ไม่สามารถบันทึกข้อมูลได้", "error");
             }
-        }   
+        }
     </script>
 </body>
 </html>
