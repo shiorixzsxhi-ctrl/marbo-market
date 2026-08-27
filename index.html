@@ -25,13 +25,14 @@
             color: var(--text-primary);
             margin: 0;
             padding-bottom: 60px;
+            overflow-x: hidden;
         }
 
         .navbar-clean {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border-soft);
-            padding: 12px 0;
+            padding: 10px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -39,7 +40,7 @@
 
         .brand-title {
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--accent-warm);
             text-decoration: none;
             letter-spacing: -0.5px;
@@ -50,11 +51,12 @@
             border: none;
             color: var(--text-secondary);
             font-weight: 400;
-            font-size: 0.9rem;
-            padding: 6px 16px;
+            font-size: 0.85rem;
+            padding: 6px 14px;
             border-radius: 20px;
             transition: all 0.2s ease;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .nav-pill-btn:hover, .nav-pill-btn.active {
@@ -67,8 +69,8 @@
             background: var(--surface);
             border: 1px solid var(--border-soft);
             color: var(--text-primary);
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
@@ -84,10 +86,17 @@
 
         .hero-section {
             background: linear-gradient(120deg, #ebf5fb 0%, #d4e6f1 100%);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 24px 0 16px 0;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 16px 0;
             border: 1px solid var(--border-soft);
+        }
+
+        @media (min-width: 768px) {
+            .hero-section {
+                padding: 40px;
+                margin: 24px 0 16px 0;
+            }
         }
 
         .product-card {
@@ -107,10 +116,16 @@
         }
 
         .product-img-wrapper {
-            height: 190px;
+            height: 160px;
             background: #f1f5f9;
             position: relative;
             overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .product-img-wrapper {
+                height: 190px;
+            }
         }
 
         .product-img-wrapper img {
@@ -123,9 +138,9 @@
         .category-badge {
             background-color: #ebf5fb;
             color: var(--accent-warm);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 12px;
         }
 
@@ -136,7 +151,7 @@
             border-radius: 12px;
             padding: 8px 18px;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: background 0.2s;
         }
 
@@ -150,7 +165,7 @@
             border: 1px solid var(--border-soft);
             border-radius: 12px;
             padding: 10px 14px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .form-control:focus, .form-select:focus {
@@ -170,19 +185,22 @@
             background-color: #f0fdf4;
             border-left: 4px solid #22c55e;
             border-radius: 12px;
-            padding: 14px;
+            padding: 12px;
             margin-bottom: 16px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         #toast-container {
             position: fixed;
             top: 20px;
             right: 20px;
+            left: 20px;
             z-index: 1080;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            max-width: 350px;
+            margin-left: auto;
         }
 
         .custom-toast {
@@ -191,7 +209,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border-radius: 14px;
             padding: 14px 18px;
-            min-width: 280px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -202,6 +219,11 @@
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        /* ปรับแต่ง Mobile Offcanvas Menu */
+        .mobile-menu-drawer {
+            border-radius: 0 20px 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -211,16 +233,22 @@
     <!-- Navbar -->
     <nav class="navbar-clean">
         <div class="container d-flex align-items-center justify-content-between">
-            <a class="brand-title" href="#" onclick="switchTab('home')">
-                <i class="fa-solid fa-water me-1"></i> MarboMarket
-            </a>
+            <div class="d-flex align-items-center gap-2">
+                <!-- ปุ่มเปิดเมนูเฉพาะหน้าจอมือถือ -->
+                <button class="icon-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuOffcanvas" aria-controls="mobileMenuOffcanvas">
+                    <i class="fa-solid fa-bars" style="font-size: 0.9rem;"></i>
+                </button>
+                <a class="brand-title" href="#" onclick="switchTab('home')">
+                    <i class="fa-solid fa-water me-1"></i> MarboMarket
+                </a>
+            </div>
 
+            <!-- เมนูสำหรับจอคอมพิวเตอร์ (Desktop) -->
             <div class="d-none d-lg-flex align-items-center gap-1">
                 <button class="nav-pill-btn active" onclick="switchTab('home')">หน้าแรก</button>
                 <button class="nav-pill-btn" onclick="switchTab('shop')">สินค้าทั้งหมด</button>
                 <button class="nav-pill-btn" onclick="switchTab('orders')">คำสั่งซื้อ</button>
                 <button class="nav-pill-btn" onclick="switchTab('wishlist')">ถูกใจ (<span id="wishlist-count">0</span>)</button>
-                
                 <button class="nav-pill-btn" id="seller-tab-btn" style="display: none;" onclick="switchTab('seller')">จัดการร้าน</button>
                 <button class="nav-pill-btn text-primary fw-semibold" id="open-shop-tab-btn" style="display: none;" onclick="openRegisterStoreModal()">
                     <i class="fa-solid fa-store me-1"></i> เปิดร้านค้ากับเรา
@@ -228,6 +256,7 @@
                 <button class="nav-pill-btn" id="admin-tab-btn" style="display: none;" onclick="switchTab('admin')">แอดมิน</button>
             </div>
 
+            <!-- ปุ่มไอคอนขวา (กระดิ่ง ตะกร้า โปรไฟล์) -->
             <div class="d-flex align-items-center gap-2">
                 <button class="icon-btn position-relative" onclick="openNotiModal()" title="การแจ้งเตือน">
                     <i class="fa-regular fa-bell" style="font-size: 0.9rem;"></i>
@@ -239,13 +268,13 @@
                 </button>
 
                 <div id="auth-container">
-                    <button id="login-btn" class="btn-primary-warm py-1 px-3" style="font-size: 0.85rem;" onclick="openLoginModal()">เข้าสู่ระบบ</button>
+                    <button id="login-btn" class="btn-primary-warm py-1 px-3" style="font-size: 0.8rem;" onclick="openLoginModal()">เข้าสู่ระบบ</button>
                 </div>
                 
                 <div id="profile-container" style="display: none !important;" class="align-items-center gap-2">
-                    <div class="d-flex align-items-center gap-1 px-3 py-1 rounded-pill" style="background-color: #ebf5fb; border: 1px solid var(--border-soft);">
+                    <div class="d-none d-md-flex align-items-center gap-1 px-3 py-1 rounded-pill" style="background-color: #ebf5fb; border: 1px solid var(--border-soft);">
                         <i class="fa-solid fa-user-check text-primary" style="font-size: 0.8rem;"></i>
-                        <span class="text-primary fw-medium" style="font-size: 0.8rem;" id="user-email-display">เข้าสู่ระบบแล้ว</span>
+                        <span class="text-primary fw-medium text-truncate" style="font-size: 0.75rem; max-width: 100px;" id="user-email-display">ใช้งานอยู่</span>
                     </div>
                     <button class="btn btn-sm btn-outline-secondary rounded-circle" id="logout-btn" title="ออกจากระบบ" style="width: 32px; height: 32px;"><i class="fa-solid fa-power-off"></i></button>
                 </div>
@@ -253,31 +282,49 @@
         </div>
     </nav>
 
+    <!-- Offcanvas Menu สำหรับจอมือถือ (Mobile Drawer) -->
+    <div class="offcanvas offcanvas-start mobile-menu-drawer" tabindex="-1" id="mobileMenuOffcanvas">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-primary" style="font-size: 1.1rem;"><i class="fa-solid fa-water me-1"></i> เมนูหลัก</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column gap-2">
+            <button class="nav-pill-btn w-100 text-start active" onclick="switchTab('home'); closeMobileMenu();">หน้าแรก</button>
+            <button class="nav-pill-btn w-100 text-start" onclick="switchTab('shop'); closeMobileMenu();">สินค้าทั้งหมด</button>
+            <button class="nav-pill-btn w-100 text-start" onclick="switchTab('orders'); closeMobileMenu();">คำสั่งซื้อ</button>
+            <button class="nav-pill-btn w-100 text-start" onclick="switchTab('wishlist'); closeMobileMenu();">ถูกใจ (<span id="mobile-wishlist-count">0</span>)</button>
+            <button class="nav-pill-btn w-100 text-start" id="m-seller-tab-btn" style="display: none;" onclick="switchTab('seller'); closeMobileMenu();">จัดการร้าน</button>
+            <button class="nav-pill-btn w-100 text-start text-primary fw-semibold" id="m-open-shop-tab-btn" style="display: none;" onclick="openRegisterStoreModal(); closeMobileMenu();">
+                <i class="fa-solid fa-store me-1"></i> เปิดร้านค้ากับเรา
+            </button>
+            <button class="nav-pill-btn w-100 text-start" id="m-admin-tab-btn" style="display: none;" onclick="switchTab('admin'); closeMobileMenu();">แอดมิน</button>
+        </div>
+    </div>
+
     <!-- Main Content Container -->
-    <div class="container my-4">
+    <div class="container my-3 my-md-4">
 
         <!-- HOME TAB -->
         <div id="tab-home" class="content-tab">
-            <!-- ส่วนต้อนรับ (Hero Section) อยู่ด้านบน -->
             <div class="hero-section">
                 <span class="category-badge mb-2 d-inline-block">WELCOME MARBOMARKETS</span>
-                <h2 class="fw-bold mb-2" style="color: var(--text-primary); font-size: 1.7rem;">ยินดีต้อนรับสู่ MarboMarket แหล่งรวมร้านค้าชั้นนำ</h2>
-                <p class="text-secondary mb-3" style="max-width: 480px; font-size: 0.9rem;">เลือกซื้อสินค้าจากหลากหลายร้านค้า พร้อมระบบแยกร้านค้าเด่นชัด สั่งซื้อง่าย ตรวจสอบพัสดุได้ทันที</p>
+                <h2 class="fw-bold mb-2" style="color: var(--text-primary); font-size: 1.4rem; line-height: 1.4;">ยินดีต้อนรับสู่ MarboMarket แหล่งรวมร้านค้าชั้นนำ</h2>
+                <p class="text-secondary mb-3" style="font-size: 0.85rem;">เลือกซื้อสินค้าจากหลากหลายร้านค้า พร้อมระบบแยกร้านค้าเด่นชัด สั่งซื้อง่าย ตรวจสอบพัสดุได้ทันที</p>
                 <button class="btn-primary-warm" onclick="switchTab('shop')">เลือกชมสินค้า</button>
             </div>
 
-            <!-- แบนเนอร์แอด LINE OA ถูกย้ายมาไว้ข้างล่างส่วนต้อนรับตรงนี้ -->
+            <!-- แบนเนอร์แอด LINE OA -->
             <div class="mb-4">
                 <a href="https://line.me/R/ti/p/@958dgxzb" target="_blank" class="text-decoration-none">
-                    <div class="d-flex align-items-center justify-content-between p-3 rounded-4 shadow-sm" style="background-color: #06c755; color: #ffffff; transition: transform 0.2s;">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 rounded-4 shadow-sm gap-3" style="background-color: #06c755; color: #ffffff; transition: transform 0.2s;">
                         <div class="d-flex align-items-center gap-3">
-                            <i class="fa-brands fa-line fs-2 text-white"></i>
+                            <i class="fa-brands fa-line fs-1 text-white"></i>
                             <div>
-                                <div class="fw-bold" style="font-size: 0.95rem;">แอด LINE OA เพื่อรับการแจ้งเตือนอัตโนมัติ</div>
-                                <div style="font-size: 0.8rem; opacity: 0.9;">รับแจ้งเตือนสถานะการจัดส่งและเลขพัสดุตรงเข้า LINE ส่วนตัวคุณทันที (LINE ID: @958dgxzb)</div>
+                                <div class="fw-bold" style="font-size: 0.9rem;">แอด LINE OA เพื่อรับการแจ้งเตือนอัตโนมัติ</div>
+                                <div style="font-size: 0.75rem; opacity: 0.9;">รับแจ้งเตือนสถานะการจัดส่งและเลขพัสดุตรงเข้า LINE ส่วนตัวคุณ (LINE ID: @958dgxzb)</div>
                             </div>
                         </div>
-                        <span class="btn btn-light text-success fw-bold px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.85rem; white-space: nowrap;">
+                        <span class="btn btn-light text-success fw-bold px-3 py-2 rounded-pill shadow-sm text-center" style="font-size: 0.8rem; white-space: nowrap;">
                             <i class="fa-solid fa-user-plus me-1"></i> แอด LINE เลย
                         </span>
                     </div>
@@ -285,26 +332,26 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold m-0" style="font-size: 1.1rem;">สินค้าแนะนำ</h5>
+                <h5 class="fw-bold m-0" style="font-size: 1.05rem;">สินค้าแนะนำ</h5>
                 <a href="#" onclick="switchTab('shop'); return false;" class="text-decoration-none text-secondary small fw-semibold">ดูทั้งหมด &rarr;</a>
             </div>
-            <div class="row g-3" id="featured-products-container"></div>
+            <div class="row g-2 g-md-3" id="featured-products-container"></div>
         </div>
 
         <!-- SHOP TAB -->
         <div id="tab-shop" class="content-tab" style="display: none;">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                <h4 class="fw-bold m-0" style="font-size: 1.2rem;">สินค้าทั้งหมด</h4>
-                <div style="width: 250px;">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h4 class="fw-bold m-0" style="font-size: 1.15rem;">สินค้าทั้งหมด</h4>
+                <div class="w-100 w-md-auto" style="max-width: 250px;">
                     <input type="text" id="search-input" class="form-control" placeholder="ค้นหาชื่อสินค้า..." oninput="filterProducts()">
                 </div>
             </div>
-            <div class="row g-3" id="all-products-container"></div>
+            <div class="row g-2 g-md-3" id="all-products-container"></div>
         </div>
 
         <!-- ORDERS TAB -->
         <div id="tab-orders" class="content-tab" style="display: none;">
-            <h4 class="fw-bold mb-4" style="font-size: 1.2rem;">ประวัติคำสั่งซื้อของฉัน</h4>
+            <h4 class="fw-bold mb-3" style="font-size: 1.15rem;">ประวัติคำสั่งซื้อของฉัน</h4>
             <div id="my-orders-container">
                 <p class="text-secondary text-center py-5 small">ยังไม่มีประวัติการสั่งซื้อ</p>
             </div>
@@ -312,28 +359,26 @@
 
         <!-- WISHLIST TAB -->
         <div id="tab-wishlist" class="content-tab" style="display: none;">
-            <h4 class="fw-bold mb-4" style="font-size: 1.2rem;">สินค้าที่ถูกใจ</h4>
-            <div class="row g-3" id="wishlist-products-container"></div>
+            <h4 class="fw-bold mb-3" style="font-size: 1.15rem;">สินค้าที่ถูกใจ</h4>
+            <div class="row g-2 g-md-3" id="wishlist-products-container"></div>
         </div>
 
         <!-- SELLER TAB -->
         <div id="tab-seller" class="content-tab" style="display: none;">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <div>
-                    <h4 class="fw-bold mb-1" id="setting-store-title" style="font-size: 1.15rem;">จัดการร้านค้า</h4>
-                    <p class="text-secondary small m-0" style="font-size: 0.8rem;">จัดการรายการสินค้า ตรวจสอบออเดอร์ และตั้งค่าร้านค้าของคุณ</p>
-                </div>
+            <div class="mb-3">
+                <h4 class="fw-bold mb-1" id="setting-store-title" style="font-size: 1.1rem;">จัดการร้านค้า</h4>
+                <p class="text-secondary small m-0" style="font-size: 0.75rem;">จัดการรายการสินค้า ตรวจสอบออเดอร์ และตั้งค่าร้านค้าของคุณ</p>
             </div>
 
             <div class="row g-3">
                 <div class="col-lg-7">
                     <div class="product-card p-3 mb-3">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <h6 class="fw-bold m-0" style="font-size: 0.95rem;"><i class="fa-solid fa-receipt me-2 text-primary"></i>คำสั่งซื้อใหม่ / สลีปโอนเงิน / ที่อยู่จัดส่ง</h6>
-                            <span class="badge bg-success text-white" style="font-size: 0.7rem;">เรียลไทม์ (Real-time)</span>
+                        <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-1">
+                            <h6 class="fw-bold m-0" style="font-size: 0.9rem;"><i class="fa-solid fa-receipt me-2 text-primary"></i>คำสั่งซื้อใหม่ / สลีปโอนเงิน / ที่อยู่</h6>
+                            <span class="badge bg-success text-white" style="font-size: 0.65rem;">Real-time</span>
                         </div>
                         <div class="table-responsive">
-                            <table class="table align-middle mb-0" style="font-size: 0.78rem;">
+                            <table class="table align-middle mb-0" style="font-size: 0.75rem; min-width: 500px;">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ออเดอร์</th>
@@ -350,9 +395,9 @@
                     </div>
 
                     <div class="product-card p-3">
-                        <h6 class="fw-bold mb-2" style="font-size: 0.95rem;"><i class="fa-solid fa-boxes-stacked me-2 text-primary"></i>รายการสินค้าในร้าน</h6>
+                        <h6 class="fw-bold mb-2" style="font-size: 0.9rem;"><i class="fa-solid fa-boxes-stacked me-2 text-primary"></i>รายการสินค้าในร้าน</h6>
                         <div class="table-responsive">
-                            <table class="table align-middle mb-0" style="font-size: 0.78rem;">
+                            <table class="table align-middle mb-0" style="font-size: 0.75rem; min-width: 400px;">
                                 <thead class="table-light">
                                     <tr>
                                         <th>รูป</th>
@@ -370,7 +415,7 @@
 
                 <div class="col-lg-5">
                     <div class="product-card p-3 mb-3">
-                        <h6 class="fw-bold mb-2" style="font-size: 0.95rem;"><i class="fa-solid fa-plus me-2 text-primary"></i>ลงขายสินค้าใหม่</h6>
+                        <h6 class="fw-bold mb-2" style="font-size: 0.9rem;"><i class="fa-solid fa-plus me-2 text-primary"></i>ลงขายสินค้าใหม่</h6>
                         <form id="add-product-form" onsubmit="addProduct(event)">
                             <div class="mb-2">
                                 <label class="form-label text-secondary" style="font-size: 0.75rem;">ชื่อสินค้า</label>
@@ -396,7 +441,7 @@
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label text-secondary" style="font-size: 0.75rem;"><i class="fa-solid fa-image me-1"></i>อัปโหลดรูปภาพสินค้า</label>
+                                <label class="form-label text-secondary" style="font-size: 0.75rem;"><i class="fa-solid fa-image me-1"></i>รูปภาพสินค้า</label>
                                 <input type="file" class="form-control form-control-sm" id="p-image-file" accept="image/*" required onchange="previewProductImage(event)">
                                 <input type="hidden" id="p-image">
                             </div>
@@ -405,22 +450,22 @@
                     </div>
 
                     <div class="product-card p-3">
-                        <h6 class="fw-bold mb-2" style="font-size: 0.95rem;"><i class="fa-solid fa-gear me-2 text-primary"></i>ตั้งค่าร้านค้า (รับเงินโดยตรง)</h6>
-                        <div class="line-noti-box p-2 mb-2" style="font-size: 0.75rem;">
+                        <h6 class="fw-bold mb-2" style="font-size: 0.9rem;"><i class="fa-solid fa-gear me-2 text-primary"></i>ตั้งค่าร้านค้า (รับเงินโดยตรง)</h6>
+                        <div class="line-noti-box p-2 mb-2" style="font-size: 0.72rem;">
                             <div class="fw-bold text-success mb-1"><i class="fa-solid fa-circle-check me-1"></i> ระบบรับเงินร้านค้า</div>
                             <div class="text-secondary">เงินค่าสินค้าจะโอนเข้าพร้อมเพย์ของท่านโดยตรงจากผู้ซื้อ</div>
                         </div>
                         <form id="update-store-form" onsubmit="updateStoreSettings(event)">
                             <div class="mb-2">
-                                <label class="form-label text-secondary" style="font-size: 0.75rem;">ชื่อร้านค้า (ล็อกไว้)</label>
+                                <label class="form-label text-secondary" style="font-size: 0.72rem;">ชื่อร้านค้า (ล็อกไว้)</label>
                                 <input type="text" class="form-control form-control-sm bg-light" id="st-name" readonly>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label text-secondary" style="font-size: 0.75rem;">เบอร์ PromptPay ของร้านคุณ</label>
+                                <label class="form-label text-secondary" style="font-size: 0.72rem;">เบอร์ PromptPay ของร้านคุณ</label>
                                 <input type="text" class="form-control form-control-sm" id="st-promptpay" placeholder="0812345678" required>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label text-secondary" style="font-size: 0.75rem;">LINE User ID</label>
+                                <label class="form-label text-secondary" style="font-size: 0.72rem;">LINE User ID</label>
                                 <input type="text" class="form-control form-control-sm" id="st-lineid" placeholder="U123456789...">
                             </div>
                             <button type="submit" class="btn btn-outline-primary w-100 btn-sm py-1 rounded-pill" style="font-size: 0.8rem;">บันทึกการตั้งค่า</button>
@@ -432,33 +477,33 @@
 
         <!-- ADMIN TAB -->
         <div id="tab-admin" class="content-tab" style="display: none;">
-            <h4 class="fw-bold mb-4" style="font-size: 1.2rem;"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>แดชบอร์ดผู้ดูแลระบบ (Admin Marketplace)</h4>
+            <h4 class="fw-bold mb-3" style="font-size: 1.15rem;"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>แดชบอร์ดผู้ดูแลระบบ</h4>
             
-            <div class="row g-3 mb-4">
+            <div class="row g-2 g-md-3 mb-4">
                 <div class="col-md-4">
                     <div class="product-card p-3">
                         <span class="text-secondary small">ยอดซื้อขายรวมในระบบ</span>
-                        <h3 class="fw-bold text-primary mt-1" id="admin-total-sales">฿0</h3>
+                        <h3 class="fw-bold text-primary mt-1" id="admin-total-sales" style="font-size: 1.3rem;">฿0</h3>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="product-card p-3">
                         <span class="text-secondary small">คำสั่งซื้อทั้งหมด</span>
-                        <h3 class="fw-bold text-dark mt-1" id="admin-total-orders">0 รายการ</h3>
+                        <h3 class="fw-bold text-dark mt-1" id="admin-total-orders" style="font-size: 1.3rem;">0 รายการ</h3>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="product-card p-3">
                         <span class="text-secondary small">สมาชิกในระบบ</span>
-                        <h3 class="fw-bold text-dark mt-1" id="admin-total-users">0 คน</h3>
+                        <h3 class="fw-bold text-dark mt-1" id="admin-total-users" style="font-size: 1.3rem;">0 คน</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card p-4 mb-4">
-                <h5 class="fw-bold mb-3" style="font-size: 1.1rem;">คำสั่งซื้อทั้งหมดในระบบ Marketplace</h5>
+            <div class="product-card p-3 p-md-4 mb-4">
+                <h5 class="fw-bold mb-3" style="font-size: 1.05rem;">คำสั่งซื้อทั้งหมดในระบบ Marketplace</h5>
                 <div class="table-responsive">
-                    <table class="table align-middle" style="font-size: 0.85rem;">
+                    <table class="table align-middle" style="font-size: 0.8rem; min-width: 500px;">
                         <thead class="table-light">
                             <tr>
                                 <th>รหัสคำสั่งซื้อ</th>
@@ -473,10 +518,10 @@
                 </div>
             </div>
 
-            <div class="product-card p-4">
-                <h5 class="fw-bold mb-3" style="font-size: 1.1rem;">รายชื่อสมาชิกทั้งหมด</h5>
+            <div class="product-card p-3 p-md-4">
+                <h5 class="fw-bold mb-3" style="font-size: 1.05rem;">รายชื่อสมาชิกทั้งหมด</h5>
                 <div class="table-responsive">
-                    <table class="table align-middle" style="font-size: 0.85rem;">
+                    <table class="table align-middle" style="font-size: 0.8rem; min-width: 350px;">
                         <thead class="table-light">
                             <tr>
                                 <th>อีเมลสมาชิก</th>
@@ -495,7 +540,7 @@
     <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-4">
-                <h4 class="fw-bold mb-3" style="font-size: 1.2rem;">เข้าสู่ระบบ</h4>
+                <h4 class="fw-bold mb-3" style="font-size: 1.15rem;">เข้าสู่ระบบ</h4>
                 <form id="login-form" onsubmit="handleLogin(event)">
                     <div class="mb-3">
                         <label class="form-label small text-secondary">อีเมล</label>
@@ -515,7 +560,7 @@
     <div class="modal fade" id="registerStoreModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-4">
-                <h4 class="fw-bold mb-2" style="font-size: 1.2rem;"><i class="fa-solid fa-store me-2 text-primary"></i>ลงทะเบียนเปิดร้านค้าใหม่</h4>
+                <h4 class="fw-bold mb-2" style="font-size: 1.15rem;"><i class="fa-solid fa-store me-2 text-primary"></i>ลงทะเบียนเปิดร้านค้าใหม่</h4>
                 <p class="text-secondary small mb-3">กรอกชื่อร้านค้าและเบอร์พร้อมเพย์ส่วนตัวของท่าน เพื่อให้ลูกค้าโอนเงินเข้าบัญชีท่านโดยตรง</p>
                 <form id="register-store-form" onsubmit="handleRegisterStore(event)">
                     <div class="mb-3">
@@ -523,10 +568,10 @@
                         <input type="text" class="form-control" id="reg-store-name" required placeholder="เช่น Toey Shop">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small text-secondary">เบอร์พร้อมเพย์ส่วนตัว (สำหรับรับเงินค่าสินค้าจากลูกค้าโดยตรง) *</label>
+                        <label class="form-label small text-secondary">เบอร์พร้อมเพย์ส่วนตัว (สำหรับรับเงินค่าสินค้า) *</label>
                         <input type="text" class="form-control" id="reg-store-promptpay" required placeholder="0812345678">
                     </div>
-                    <div class="row">
+                    <div class="row g-2">
                         <div class="col-6 mb-3">
                             <label class="form-label small text-secondary">ชื่อบัญชี</label>
                             <input type="text" class="form-control" id="reg-store-accname" placeholder="นาย สมชาย ใจดี">
@@ -551,16 +596,16 @@
         </div>
     </div>
 
-    <!-- Modal ชำระเงิน (เลือกได้ทั้ง PromptPay โอนตรงร้าน หรือ เก็บเงินปลายทาง COD) -->
+    <!-- Modal ชำระเงิน -->
     <div class="modal fade" id="paymentModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4">
-                <h4 class="fw-bold mb-2 text-center" style="font-size: 1.2rem;"><i class="fa-solid fa-credit-card me-2 text-primary"></i>เลือกวิธีชำระเงินและที่อยู่จัดส่ง</h4>
+                <h4 class="fw-bold mb-2 text-center" style="font-size: 1.15rem;"><i class="fa-solid fa-credit-card me-2 text-primary"></i>เลือกวิธีชำระเงินและที่อยู่จัดส่ง</h4>
                 <p class="text-secondary small mb-3 text-center">ท่านสามารถเลือกโอนเงินเข้าบัญชีร้านค้าโดยตรง หรือเลือกเก็บเงินปลายทาง (COD)</p>
                 
                 <div class="row g-3">
-                    <div class="col-md-6 border-end">
-                        <h6 class="fw-bold small mb-2"><i class="fa-solid fa-location-dot me-1 text-primary"></i>ที่อยู่จัดส่งสินค้า (แยกช่องให้ชัดเจน)</h6>
+                    <div class="col-md-6 border-end-md">
+                        <h6 class="fw-bold small mb-2"><i class="fa-solid fa-location-dot me-1 text-primary"></i>ที่อยู่จัดส่งสินค้า</h6>
                         <form id="checkout-address-form">
                             <div class="mb-2">
                                 <label class="form-label text-secondary" style="font-size: 0.75rem;">ชื่อ-นามสกุล ผู้รับ *</label>
@@ -583,7 +628,7 @@
                             <div class="row g-2">
                                 <div class="col-6 mb-2">
                                     <label class="form-label text-secondary" style="font-size: 0.75rem;">ถนน / หมู่</label>
-                                    <input type="text" class="form-control form-control-sm" id="ship-street-moo" placeholder="ถ.สุขุมวิท / หมู่ 2">
+                                    <input type="text" class="form-control form-control-sm" id="ship-street-moo" placeholder="ถ.สุขุมวิท">
                                 </div>
                                 <div class="col-6 mb-2">
                                     <label class="form-label text-secondary" style="font-size: 0.75rem;">ตำบล / แขวง *</label>
@@ -612,7 +657,7 @@
                             <h6 class="fw-bold small mb-2"><i class="fa-solid fa-wallet me-1 text-primary"></i>เลือกช่องทางชำระเงิน</h6>
                             <div class="mb-3">
                                 <select class="form-select form-select-sm fw-medium text-primary" id="payment-method-select" onchange="togglePaymentMethodView()">
-                                    <option value="promptpay">📱 โอนผ่านพร้อมเพย์ (เข้าบัญชีร้านค้าโดยตรง)</option>
+                                    <option value="promptpay">📱 โอนผ่านพร้อมเพย์ (เข้าบัญชีร้านค้า)</option>
                                     <option value="cod">📦 เก็บเงินปลายทาง (COD)</option>
                                 </select>
                             </div>
@@ -620,9 +665,9 @@
                             <!-- ส่วน PromptPay -->
                             <div id="view-promptpay" class="text-center">
                                 <div id="payment-qr-container" class="mb-2"></div>
-                                <div id="payment-details-box" class="text-start bg-light p-2 rounded mb-2 small" style="font-size: 0.75rem;"></div>
+                                <div id="payment-details-box" class="text-start bg-light p-2 rounded mb-2 small" style="font-size: 0.72rem;"></div>
                                 <div class="mb-2 text-start">
-                                    <label class="form-label text-secondary" style="font-size: 0.75rem;"><i class="fa-solid fa-image me-1"></i>อัปโหลดสลีปโอนเงินให้ร้านค้า *</label>
+                                    <label class="form-label text-secondary" style="font-size: 0.72rem;"><i class="fa-solid fa-image me-1"></i>อัปโหลดสลีปโอนเงิน *</label>
                                     <input type="file" class="form-control form-control-sm" id="slip-image-file" accept="image/*" onchange="previewSlipImage(event)">
                                     <input type="hidden" id="slip-image-url">
                                     <div id="slip-preview-container" class="mt-2 text-center" style="display: none;">
@@ -635,7 +680,7 @@
                             <div id="view-cod" class="p-3 bg-light rounded text-center" style="display: none;">
                                 <i class="fa-solid fa-truck-ramp-box text-primary fs-3 mb-2"></i>
                                 <div class="fw-bold small text-dark mb-1">บริการเก็บเงินปลายทาง (COD)</div>
-                                <p class="text-secondary small m-0" style="font-size: 0.75rem;">ท่านไม่ต้องโอนเงินตอนนี้ ชำระเงินสดกับพนักงานขนส่งตอนรับสินค้าหน้าบ้านได้เลย</p>
+                                <p class="text-secondary small m-0" style="font-size: 0.72rem;">ชำระเงินสดกับพนักงานขนส่งตอนรับสินค้าหน้าบ้านได้เลย</p>
                             </div>
                         </div>
 
@@ -646,16 +691,16 @@
         </div>
     </div>
 
-    <!-- Modal สำหรับแก้ไขสต็อกสินค้า -->
+    <!-- Modal แก้ไขสต็อก -->
     <div class="modal fade" id="editStockModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content p-4">
-                <h5 class="fw-bold mb-3" style="font-size: 1.1rem;"><i class="fa-solid fa-pen-to-square me-2 text-primary"></i>แก้ไขสต็อกสินค้า</h5>
+                <h5 class="fw-bold mb-3" style="font-size: 1.05rem;"><i class="fa-solid fa-pen-to-square me-2 text-primary"></i>แก้ไขสต็อกสินค้า</h5>
                 <form id="edit-stock-form" onsubmit="saveStockUpdate(event)">
                     <input type="hidden" id="edit-product-id">
                     <div class="mb-3">
                         <label class="form-label small text-secondary" id="edit-product-name-label">ชื่อสินค้า</label>
-                        <input type="number" class="form-control" id="edit-product-stock" min="0" required placeholder="ระบุจำนวนสต็อกใหม่">
+                        <input type="number" class="form-control" id="edit-product-stock" min="0" required placeholder="ระบุสต็อกใหม่">
                     </div>
                     <button type="submit" class="btn-primary-warm w-100 btn-sm py-2">บันทึกสต็อก</button>
                 </form>
@@ -667,8 +712,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold m-0" style="font-size: 1.1rem;">การแจ้งเตือน</h5>
-                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="font-size: 0.75rem;" onclick="markAllNotificationsAsRead()">อ่านทั้งหมด</button>
+                    <h5 class="fw-bold m-0" style="font-size: 1.05rem;">การแจ้งเตือน</h5>
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="font-size: 0.7rem;" onclick="markAllNotificationsAsRead()">อ่านทั้งหมด</button>
                 </div>
                 <div id="noti-list-container" style="max-height: 250px; overflow-y: auto;">
                     <p class="text-secondary text-center small py-3">ไม่มีการแจ้งเตือน</p>
@@ -680,7 +725,7 @@
     <div class="modal fade" id="cartModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4">
-                <h4 class="fw-bold mb-3" style="font-size: 1.2rem;">ตะกร้าสินค้า</h4>
+                <h4 class="fw-bold mb-3" style="font-size: 1.15rem;">ตะกร้าสินค้า</h4>
                 <div id="cart-items-container" style="max-height: 350px; overflow-y: auto;"></div>
                 <hr style="border-color: var(--border-soft);">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -735,6 +780,12 @@
         const paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
         const editStockModalInstance = new bootstrap.Modal(document.getElementById('editStockModal'));
         const cartModalInstance = new bootstrap.Modal(document.getElementById('cartModal'));
+
+        window.closeMobileMenu = function() {
+            const offcanvasEl = document.getElementById('mobileMenuOffcanvas');
+            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+            if (offcanvas) offcanvas.hide();
+        }
 
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -802,6 +853,9 @@
             const adminTabBtn = document.getElementById('admin-tab-btn');
             const sellerTabBtn = document.getElementById('seller-tab-btn');
             const openShopTabBtn = document.getElementById('open-shop-tab-btn');
+            const mAdminTabBtn = document.getElementById('m-admin-tab-btn');
+            const mSellerTabBtn = document.getElementById('m-seller-tab-btn');
+            const mOpenShopTabBtn = document.getElementById('m-open-shop-tab-btn');
 
             await loadStoresCache();
 
@@ -813,25 +867,36 @@
                 loadUserNotifications(user.email);
 
                 if (user.email === ADMIN_EMAIL) {
-                    adminTabBtn.style.display = 'block';
-                    sellerTabBtn.style.display = 'block';
-                    openShopTabBtn.style.display = 'none';
+                    if(adminTabBtn) adminTabBtn.style.display = 'block';
+                    if(sellerTabBtn) sellerTabBtn.style.display = 'block';
+                    if(openShopTabBtn) openShopTabBtn.style.display = 'none';
+                    if(mAdminTabBtn) mAdminTabBtn.style.display = 'block';
+                    if(mSellerTabBtn) mSellerTabBtn.style.display = 'block';
+                    if(mOpenShopTabBtn) mOpenShopTabBtn.style.display = 'none';
                 } else {
-                    adminTabBtn.style.display = 'none';
+                    if(adminTabBtn) adminTabBtn.style.display = 'none';
+                    if(mAdminTabBtn) mAdminTabBtn.style.display = 'none';
                     if (storesCache[user.email]) {
-                        sellerTabBtn.style.display = 'block';
-                        openShopTabBtn.style.display = 'none';
+                        if(sellerTabBtn) sellerTabBtn.style.display = 'block';
+                        if(openShopTabBtn) openShopTabBtn.style.display = 'none';
+                        if(mSellerTabBtn) mSellerTabBtn.style.display = 'block';
+                        if(mOpenShopTabBtn) mOpenShopTabBtn.style.display = 'none';
                     } else {
-                        sellerTabBtn.style.display = 'none';
-                        openShopTabBtn.style.display = 'block';
+                        if(sellerTabBtn) sellerTabBtn.style.display = 'none';
+                        if(openShopTabBtn) openShopTabBtn.style.display = 'block';
+                        if(mSellerTabBtn) mSellerTabBtn.style.display = 'none';
+                        if(mOpenShopTabBtn) mOpenShopTabBtn.style.display = 'block';
                     }
                 }
             } else {
                 loginBtn.style.display = 'block';
                 profileContainer.style.display = 'none';
-                adminTabBtn.style.display = 'none';
-                sellerTabBtn.style.display = 'none';
-                openShopTabBtn.style.display = 'none';
+                if(adminTabBtn) adminTabBtn.style.display = 'none';
+                if(sellerTabBtn) sellerTabBtn.style.display = 'none';
+                if(openShopTabBtn) openShopTabBtn.style.display = 'none';
+                if(mAdminTabBtn) mAdminTabBtn.style.display = 'none';
+                if(mSellerTabBtn) mSellerTabBtn.style.display = 'none';
+                if(mOpenShopTabBtn) mOpenShopTabBtn.style.display = 'none';
                 notifications = [];
                 updateNotiBadge();
             }
@@ -879,8 +944,10 @@
                 addNotification(currentUser.email, "เปิดร้านค้าสำเร็จ! พร้อมรับเงินโอนตรงจากลูกค้า");
                 showToast("เปิดร้านค้าสำเร็จ!");
                 
-                document.getElementById('open-shop-tab-btn').style.display = 'none';
-                document.getElementById('seller-tab-btn').style.display = 'block';
+                const openShopTabBtn = document.getElementById('open-shop-tab-btn');
+                const sellerTabBtn = document.getElementById('seller-tab-btn');
+                if(openShopTabBtn) openShopTabBtn.style.display = 'none';
+                if(sellerTabBtn) sellerTabBtn.style.display = 'block';
                 switchTab('seller');
             } catch (error) {
                 showToast("ไม่สามารถเปิดร้านค้าได้", "error");
@@ -930,8 +997,9 @@
         window.switchTab = function(tabName) {
             document.querySelectorAll('.content-tab').forEach(el => el.style.display = 'none');
             document.getElementById(`tab-${tabName}`).style.display = 'block';
+            
             document.querySelectorAll('.nav-pill-btn').forEach(el => el.classList.remove('active'));
-            event.target.closest('.nav-pill-btn')?.classList.add('active');
+            document.querySelectorAll(`button[onclick*="switchTab('${tabName}')"]`).forEach(el => el.classList.add('active'));
 
             if (tabName === 'home' || tabName === 'shop') loadProducts();
             if (tabName === 'wishlist') renderWishlist();
@@ -1031,24 +1099,24 @@
                 products.forEach((p) => {
                     const isWishlist = wishlist.some(item => item.id === p.id);
                     html += `
-                        <div class="col-md-3 mb-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="product-card d-flex flex-column" onclick="openProductDetail('${p.id}')">
                                 <div class="product-img-wrapper">
                                     <img src="${p.image}" onerror="this.src='https://via.placeholder.com/200'">
-                                    <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 rounded-circle shadow-sm" style="width: 32px; height: 32px;" onclick="toggleWishlist(event, '${p.id}')">
-                                        <i class="${isWishlist ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
+                                    <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 rounded-circle shadow-sm" style="width: 30px; height: 30px;" onclick="toggleWishlist(event, '${p.id}')">
+                                        <i class="${isWishlist ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}" style="font-size: 0.8rem;"></i>
                                     </button>
                                 </div>
-                                <div class="p-3 d-flex flex-column flex-grow-1">
+                                <div class="p-2 p-md-3 d-flex flex-column flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <span class="text-secondary" style="font-size: 0.75rem;"><i class="fa-solid fa-store me-1"></i>${p.shopName || 'ร้านค้า'}</span>
+                                        <span class="text-secondary text-truncate" style="font-size: 0.65rem; max-width: 70px;"><i class="fa-solid fa-store me-1"></i>${p.shopName || 'ร้านค้า'}</span>
                                         <span class="category-badge">${p.category}</span>
                                     </div>
-                                    <h6 class="fw-bold text-dark text-truncate mb-2" style="font-size: 0.9rem;">${p.name}</h6>
-                                    <div class="text-secondary small mb-2">เหลือในสต็อก: <strong>${p.stock}</strong> ชิ้น</div>
+                                    <h6 class="fw-bold text-dark text-truncate mb-1" style="font-size: 0.85rem;">${p.name}</h6>
+                                    <div class="text-secondary small mb-2" style="font-size: 0.7rem;">สต็อก: <strong>${p.stock}</strong></div>
                                     <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
-                                        <span class="fw-bold" style="color: var(--accent-warm); font-size: 0.95rem;">฿${Number(p.price).toLocaleString()}</span>
-                                        ${p.stock > 0 ? `<button class="btn btn-sm btn-primary-warm py-1 px-3" onclick="event.stopPropagation(); addToCart('${p.id}')">ซื้อ</button>` : `<span class="badge bg-secondary">สินค้าหมด</span>`}
+                                        <span class="fw-bold" style="color: var(--accent-warm); font-size: 0.85rem;">฿${Number(p.price).toLocaleString()}</span>
+                                        ${p.stock > 0 ? `<button class="btn btn-sm btn-primary-warm py-1 px-2" style="font-size: 0.75rem;" onclick="event.stopPropagation(); addToCart('${p.id}')">ซื้อ</button>` : `<span class="badge bg-secondary" style="font-size: 0.65rem;">หมด</span>`}
                                     </div>
                                 </div>
                             </div>
@@ -1067,18 +1135,18 @@
 
             const content = `
                 <div class="text-center mb-3">
-                    <img src="${p.image}" class="rounded mb-3" style="width: 100%; height: 220px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300'">
+                    <img src="${p.image}" class="rounded mb-3" style="width: 100%; height: 180px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300'">
                     <span class="category-badge mb-2 d-inline-block">${p.category}</span>
-                    <h4 class="fw-bold text-dark mb-1" style="font-size: 1.2rem;">${p.name}</h4>
+                    <h4 class="fw-bold text-dark mb-1" style="font-size: 1.1rem;">${p.name}</h4>
                     <div class="text-secondary small mb-2"><i class="fa-solid fa-store me-1"></i>ร้าน: ${p.shopName || 'ร้านค้า'}</div>
                     <h5 class="fw-bold text-primary mb-3">฿${Number(p.price).toLocaleString()}</h5>
                     <div class="text-secondary small mb-3">คงเหลือในสต็อก: <strong>${p.stock}</strong> ชิ้น</div>
                 </div>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-outline-danger flex-grow-1 py-2" onclick="toggleWishlistModal('${p.id}')">
-                        <i class="${isWishlist ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'} me-1"></i> ${isWishlist ? 'เอาออกจากถูกใจ' : 'ถูกใจสินค้า'}
+                    <button class="btn btn-outline-danger flex-grow-1 py-2 small" onclick="toggleWishlistModal('${p.id}')">
+                        <i class="${isWishlist ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'} me-1"></i> ${isWishlist ? 'เอาออก' : 'ถูกใจ'}
                     </button>
-                    ${p.stock > 0 ? `<button class="btn-primary-warm flex-grow-1 py-2" onclick="addToCartAndClose('${p.id}')"><i class="fa-solid fa-cart-shopping me-1"></i> ใส่ตะกร้า</button>` : `<button class="btn btn-secondary flex-grow-1 py-2" disabled>สินค้าหมด</button>`}
+                    ${p.stock > 0 ? `<button class="btn-primary-warm flex-grow-1 py-2 small" onclick="addToCartAndClose('${p.id}')"><i class="fa-solid fa-cart-shopping me-1"></i> ใส่ตะกร้า</button>` : `<button class="btn btn-secondary flex-grow-1 py-2 small" disabled>สินค้าหมด</button>`}
                 </div>
             `;
             document.getElementById('product-detail-content').innerHTML = content;
@@ -1112,7 +1180,7 @@
                         tableHTML += `
                             <tr>
                                 <td><img src="${p.image}" width="26" height="26" class="rounded object-fit-cover"></td>
-                                <td class="fw-semibold text-truncate" style="max-width: 110px;">${p.name}</td>
+                                <td class="fw-semibold text-truncate" style="max-width: 90px;">${p.name}</td>
                                 <td>฿${Number(p.price).toLocaleString()}</td>
                                 <td><span class="badge bg-light text-dark border">${p.stock}</span></td>
                                 <td>
@@ -1172,20 +1240,20 @@
 
                         tableHTML += `
                             <tr>
-                                <td class="text-truncate text-secondary" style="max-width: 60px;">${docSnap.id.substring(0, 6)}...</td>
-                                <td style="max-width: 130px;">
+                                <td class="text-truncate text-secondary" style="max-width: 50px;">${docSnap.id.substring(0, 6)}...</td>
+                                <td style="max-width: 110px;">
                                     <div class="text-truncate fw-medium text-dark">${order.buyerEmail}</div>
-                                    <button class="btn btn-link p-0 text-primary mt-1" style="font-size: 0.72rem; text-decoration: none;" onclick="openOrderComprehensiveModal('${docSnap.id}')">
+                                    <button class="btn btn-link p-0 text-primary mt-1" style="font-size: 0.7rem; text-decoration: none;" onclick="openOrderComprehensiveModal('${docSnap.id}')">
                                         <i class="fa-solid fa-circle-info me-1"></i>ดูรายละเอียด
                                     </button>
                                 </td>
-                                <td class="text-truncate" style="max-width: 90px;" title="${itemsList}">${itemsList}</td>
+                                <td class="text-truncate" style="max-width: 80px;" title="${itemsList}">${itemsList}</td>
                                 <td class="fw-semibold">฿${Number(order.totalAmount || 0).toLocaleString()}</td>
-                                <td><span class="badge bg-info text-dark" style="font-size: 0.65rem;">${order.status}</span></td>
+                                <td><span class="badge bg-info text-dark" style="font-size: 0.6rem;">${order.status}</span></td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-primary-warm py-1 px-2" style="font-size: 0.75rem;" onclick="openOrderComprehensiveModal('${docSnap.id}')">จัดการ</button>
-                                        <button class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size: 0.75rem;" onclick="deleteOrder('${docSnap.id}')" title="ลบออเดอร์"><i class="fa-solid fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-primary-warm py-1 px-2" style="font-size: 0.7rem;" onclick="openOrderComprehensiveModal('${docSnap.id}')">จัดการ</button>
+                                        <button class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size: 0.7rem;" onclick="deleteOrder('${docSnap.id}')" title="ลบ"><i class="fa-solid fa-trash"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -1199,7 +1267,7 @@
         }
 
         window.deleteOrder = async function(orderId) {
-            if (confirm(`คุณต้องการลบคำสั่งซื้อ ${orderId} นี้ใช่หรือไม่?`)) {
+            if (confirm(`คุณต้องการลบคำสั่งซื้อนี้ใช่หรือไม่?`)) {
                 try {
                     await deleteDoc(doc(db, "orders", orderId));
                     showToast("ลบคำสั่งซื้อเรียบร้อยแล้ว");
@@ -1255,7 +1323,10 @@
         }
 
         function updateCartCount() {
-            document.getElementById('cart-count').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+            const mobileWishEl = document.getElementById('mobile-wishlist-count');
+            if (mobileWishEl) mobileWishEl.innerText = wishlist.length;
         }
 
         window.openCartModal = function() {
@@ -1268,11 +1339,11 @@
                 container.innerHTML = cart.map(item => {
                     total += item.price * item.qty;
                     return `
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-2 gap-3">
-                            <img src="${item.image}" class="rounded" style="width: 48px; height: 48px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50'">
+                        <div class="d-flex align-items-center justify-content-between border-bottom py-2 gap-2">
+                            <img src="${item.image}" class="rounded" style="width: 42px; height: 42px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50'">
                             <div class="flex-grow-1">
-                                <div class="fw-bold small text-dark">${item.name}</div>
-                                <div class="text-secondary" style="font-size: 0.75rem;"><i class="fa-solid fa-store me-1"></i>${item.shopName || 'ร้านค้า'} | ราคา: ฿${item.price.toLocaleString()} x ${item.qty}</div>
+                                <div class="fw-bold small text-dark text-truncate" style="max-width: 150px;">${item.name}</div>
+                                <div class="text-secondary" style="font-size: 0.7rem;"><i class="fa-solid fa-store me-1"></i>${item.shopName || 'ร้านค้า'} | ฿${item.price.toLocaleString()} x ${item.qty}</div>
                             </div>
                             <span class="fw-semibold text-primary small">฿${(item.price * item.qty).toLocaleString()}</span>
                         </div>
@@ -1318,8 +1389,8 @@
             const primaryPromptPay = storesInCart[firstStoreEmail]?.promptPay || '0812345678';
             
             document.getElementById('payment-qr-container').innerHTML = `
-                <img src="https://promptpay.io/${primaryPromptPay}/${totalAmountAll}.png" alt="PromptPay QR Code" class="img-fluid rounded border p-1 bg-white" style="max-width: 130px;" onerror="this.src='https://via.placeholder.com/130?text=QR+PromptPay'">
-                <div class="text-secondary mt-1" style="font-size: 0.75rem;">ยอดรวมทั้งสิ้น: <strong>฿${totalAmountAll.toLocaleString()}</strong></div>
+                <img src="https://promptpay.io/${primaryPromptPay}/${totalAmountAll}.png" alt="PromptPay QR Code" class="img-fluid rounded border p-1 bg-white" style="max-width: 120px;" onerror="this.src='https://via.placeholder.com/130?text=QR+PromptPay'">
+                <div class="text-secondary mt-1" style="font-size: 0.72rem;">ยอดรวมทั้งสิ้น: <strong>฿${totalAmountAll.toLocaleString()}</strong></div>
             `;
             document.getElementById('payment-details-box').innerHTML = detailsHtml;
             document.getElementById('slip-image-file').value = '';
@@ -1415,26 +1486,26 @@
                 querySnapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     const itemsList = data.items ? data.items.map(i => `${i.name} (x${i.qty})`).join(', ') : 'ไม่มีสินค้า';
-                    const paymentBadge = data.paymentMethod === 'cod' ? '<span class="badge bg-warning text-dark ms-1">เก็บเงินปลายทาง</span>' : '<span class="badge bg-success ms-1">โอนพร้อมเพย์</span>';
+                    const paymentBadge = data.paymentMethod === 'cod' ? '<span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;">ปลายทาง</span>' : '<span class="badge bg-success ms-1" style="font-size: 0.65rem;">พร้อมเพย์</span>';
                     
-                    let trackingHtml = data.trackingNo ? `<div class="mt-2 text-success small"><i class="fa-solid fa-truck-fast me-1"></i>ขนส่ง: <strong>${data.carrier || 'ไม่ระบุ'}</strong> | เลขพัสดุ: <strong>${data.trackingNo}</strong></div>` : `<div class="mt-2 text-muted small"><i class="fa-solid fa-clock me-1"></i>พัสดุกำลังเตรียมจัดส่ง</div>`;
+                    let trackingHtml = data.trackingNo ? `<div class="mt-2 text-success small" style="font-size: 0.75rem;"><i class="fa-solid fa-truck-fast me-1"></i>ขนส่ง: <strong>${data.carrier || 'ไม่ระบุ'}</strong> | เลขพัสดุ: <strong>${data.trackingNo}</strong></div>` : `<div class="mt-2 text-muted small" style="font-size: 0.75rem;"><i class="fa-solid fa-clock me-1"></i>พัสดุกำลังเตรียมจัดส่ง</div>`;
                     
                     let addr = data.shippingAddress || {};
-                    let addressHtml = data.shippingAddress ? `<div class="text-secondary small mt-1">จัดส่งที่: ${addr.name || ''} (${addr.phone || ''}) - บ้านเลขที่ ${addr.houseNo || ''} ${addr.soi ? 'ซ.'+addr.soi : ''} ${addr.streetMoo || ''} ต.${addr.subdistrict || ''} อ.${addr.district || ''} จ.${addr.province || ''} ${addr.zipcode || ''}</div>` : '';
+                    let addressHtml = data.shippingAddress ? `<div class="text-secondary small mt-1" style="font-size: 0.72rem;">จัดส่งที่: ${addr.name || ''} (${addr.phone || ''}) - บ้านเลขที่ ${addr.houseNo || ''} ${addr.soi ? 'ซ.'+addr.soi : ''} ${addr.streetMoo || ''} ต.${addr.subdistrict || ''} อ.${addr.district || ''} จ.${addr.province || ''} ${addr.zipcode || ''}</div>` : '';
                     
-                    let deleteBtn = data.status.includes('รอดำเนินการ') ? `<button class="btn btn-sm btn-outline-danger py-0 px-2 mt-2" style="font-size: 0.75rem;" onclick="cancelMyOrder('${docSnap.id}')"><i class="fa-solid fa-trash me-1"></i>ยกเลิก/ลบคำสั่งซื้อ</button>` : '';
+                    let deleteBtn = data.status.includes('รอดำเนินการ') ? `<button class="btn btn-sm btn-outline-danger py-0 px-2 mt-2" style="font-size: 0.7rem;" onclick="cancelMyOrder('${docSnap.id}')"><i class="fa-solid fa-trash me-1"></i>ยกเลิก/ลบคำสั่งซื้อ</button>` : '';
 
                     html += `
                         <div class="product-card p-3 mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-bold text-dark small">รหัสคำสั่งซื้อ: ${docSnap.id.substring(0, 8)}...</span>
+                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-1">
+                                <span class="fw-bold text-dark small" style="font-size: 0.8rem;">รหัสออเดอร์: ${docSnap.id.substring(0, 8)}...</span>
                                 <div>
-                                    <span class="badge bg-info text-dark">${data.status}</span>
+                                    <span class="badge bg-info text-dark" style="font-size: 0.65rem;">${data.status}</span>
                                     ${paymentBadge}
                                 </div>
                             </div>
-                            <div class="small text-secondary mb-1">สินค้า: <strong>${itemsList}</strong></div>
-                            <div class="small fw-bold text-primary mb-1">ยอดรวม: ฿${Number(data.totalAmount || 0).toLocaleString()}</div>
+                            <div class="small text-secondary mb-1" style="font-size: 0.75rem;">สินค้า: <strong>${itemsList}</strong></div>
+                            <div class="small fw-bold text-primary mb-1" style="font-size: 0.78rem;">ยอดรวม: ฿${Number(data.totalAmount || 0).toLocaleString()}</div>
                             ${addressHtml}
                             ${trackingHtml}
                             <div class="text-end">${deleteBtn}</div>
@@ -1464,12 +1535,12 @@
                     totalSales += order.totalAmount || 0;
                     ordersHtml += `
                         <tr>
-                            <td class="text-truncate" style="max-width: 100px;">${docSnap.id}</td>
-                            <td>${order.buyerEmail}</td>
+                            <td class="text-truncate" style="max-width: 80px;">${docSnap.id.substring(0,6)}...</td>
+                            <td class="text-truncate" style="max-width: 100px;">${order.buyerEmail}</td>
                             <td>฿${(order.totalAmount || 0).toLocaleString()}</td>
-                            <td><span class="badge bg-info text-dark">${order.status}</span></td>
+                            <td><span class="badge bg-info text-dark" style="font-size: 0.65rem;">${order.status}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-outline-primary py-0" onclick="updateOrderStatusDirect('${docSnap.id}', 'จัดส่งแล้ว')">เปลี่ยนสถานะ</button>
+                                <button class="btn btn-sm btn-outline-primary py-0 px-1" style="font-size: 0.7rem;" onclick="updateOrderStatusDirect('${docSnap.id}', 'จัดส่งแล้ว')">เปลี่ยนสถานะ</button>
                             </td>
                         </tr>
                     `;
@@ -1488,8 +1559,8 @@
                     userCount++;
                     usersHtml += `
                         <tr>
-                            <td><i class="fa-solid fa-user me-2 text-secondary"></i>${u.email}</td>
-                            <td>${u.createdAt ? new Date(u.createdAt.seconds * 1000).toLocaleString() : 'เพิ่งสมัคร'}</td>
+                            <td class="text-truncate" style="max-width: 150px;"><i class="fa-solid fa-user me-2 text-secondary"></i>${u.email}</td>
+                            <td>${u.createdAt ? new Date(u.createdAt.seconds * 1000).toLocaleDateString() : 'เพิ่งสมัคร'}</td>
                         </tr>
                     `;
                 });
@@ -1521,12 +1592,15 @@
         function updateNotiBadge() {
             const unreadCount = notifications.filter(n => !n.read).length;
             const badge = document.getElementById('noti-count');
-            if (unreadCount > 0) {
-                badge.innerText = unreadCount;
-                badge.style.display = 'inline-block';
-            } else {
-                badge.style.display = 'none';
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.innerText = unreadCount;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
             }
+            updateCartCount();
         }
 
         window.openNotiModal = function() {
@@ -1542,12 +1616,12 @@
                 return;
             }
             container.innerHTML = notifications.map((n, index) => `
-                <div class="border-bottom py-2 px-2 small d-flex justify-content-between align-items-center ${n.read ? 'text-muted' : 'fw-bold bg-light rounded'}" onclick="markSingleNotificationRead(${index})" style="cursor: pointer;">
+                <div class="border-bottom py-2 px-2 small d-flex justify-content-between align-items-center ${n.read ? 'text-muted' : 'fw-bold bg-light rounded'}" onclick="markSingleNotificationRead(${index})" style="cursor: pointer; font-size: 0.78rem;">
                     <div>
                         <div>${n.message}</div>
-                        <span class="text-secondary" style="font-size: 0.7rem;">${n.time}</span>
+                        <span class="text-secondary" style="font-size: 0.65rem;">${n.time}</span>
                     </div>
-                    ${!n.read ? '<span class="badge bg-primary rounded-circle p-1" style="width: 8px; height: 8px;"></span>' : ''}
+                    ${!n.read ? '<span class="badge bg-primary rounded-circle p-1" style="width: 6px; height: 6px;"></span>' : ''}
                 </div>
             `).join('');
         }
@@ -1577,6 +1651,8 @@
             else wishlist.push(product);
             localStorage.setItem('marbo_wishlist', JSON.stringify(wishlist));
             document.getElementById('wishlist-count').innerText = wishlist.length;
+            const mobileWishEl = document.getElementById('mobile-wishlist-count');
+            if (mobileWishEl) mobileWishEl.innerText = wishlist.length;
             renderProductList(allProductsCache);
             if (document.getElementById('tab-wishlist').style.display === 'block') {
                 renderWishlist();
@@ -1590,15 +1666,15 @@
             } else {
                 wishlist.forEach(p => {
                     html += `
-                        <div class="col-md-3 mb-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="product-card d-flex flex-column" onclick="openProductDetail('${p.id}')">
                                 <div class="product-img-wrapper">
                                     <img src="${p.image}" onerror="this.src='https://via.placeholder.com/200'">
                                 </div>
-                                <div class="p-3 d-flex flex-column flex-grow-1">
-                                    <h6 class="fw-bold text-dark text-truncate mb-1" style="font-size: 0.9rem;">${p.name}</h6>
-                                    <div class="fw-bold mb-2" style="color: var(--accent-warm); font-size: 0.95rem;">฿${p.price.toLocaleString()}</div>
-                                    <button class="btn btn-sm btn-outline-danger w-100 mt-auto py-1" onclick="event.stopPropagation(); toggleWishlist(event, '${p.id}')">ลบออกจากถูกใจ</button>
+                                <div class="p-2 p-md-3 d-flex flex-column flex-grow-1">
+                                    <h6 class="fw-bold text-dark text-truncate mb-1" style="font-size: 0.85rem;">${p.name}</h6>
+                                    <div class="fw-bold mb-2" style="color: var(--accent-warm); font-size: 0.85rem;">฿${p.price.toLocaleString()}</div>
+                                    <button class="btn btn-sm btn-outline-danger w-100 mt-auto py-1" style="font-size: 0.7rem;" onclick="event.stopPropagation(); toggleWishlist(event, '${p.id}')">ลบออกจากถูกใจ</button>
                                 </div>
                             </div>
                         </div>
@@ -1609,6 +1685,8 @@
         }
 
         document.getElementById('wishlist-count').innerText = wishlist.length;
+        const mobileWishEl = document.getElementById('mobile-wishlist-count');
+        if (mobileWishEl) mobileWishEl.innerText = wishlist.length;
         loadProducts();
 
         window.openOrderComprehensiveModal = function(orderId) {
@@ -1617,7 +1695,7 @@
 
             const addr = order.shippingAddress || {};
             const itemsHtml = order.items.map(i => `
-                <div class="d-flex justify-content-between align-items-center border-bottom py-1 small">
+                <div class="d-flex justify-content-between align-items-center border-bottom py-1 small" style="font-size: 0.75rem;">
                     <span>${i.name} (x${i.qty})</span>
                     <span class="fw-bold">฿${(i.price * i.qty).toLocaleString()}</span>
                 </div>
@@ -1625,26 +1703,26 @@
 
             let paymentDisplay = '';
             if (order.paymentMethod === 'cod') {
-                paymentDisplay = `<div class="mb-3 p-2 bg-warning bg-opacity-10 rounded border border-warning text-dark small"><i class="fa-solid fa-truck-ramp-box me-1 text-warning"></i><strong>วิธีชำระเงิน:</strong> เก็บเงินปลายทาง (COD) - เตรียมเก็บเงินสดจากลูกค้าตอนส่งของ</div>`;
+                paymentDisplay = `<div class="mb-3 p-2 bg-warning bg-opacity-10 rounded border border-warning text-dark small" style="font-size: 0.75rem;"><i class="fa-solid fa-truck-ramp-box me-1 text-warning"></i><strong>วิธีชำระเงิน:</strong> เก็บเงินปลายทาง (COD)</div>`;
             } else {
                 paymentDisplay = order.slipUrl ? `
                     <div class="mb-3 text-center">
-                        <h6 class="fw-bold small text-primary mb-1">สลีปการโอนเงินจากลูกค้า (โอนเข้าบัญชีท่านโดยตรง)</h6>
+                        <h6 class="fw-bold small text-primary mb-1" style="font-size: 0.78rem;">สลีปการโอนเงินจากลูกค้า</h6>
                         <a href="${order.slipUrl}" target="_blank">
-                            <img src="${order.slipUrl}" class="img-fluid rounded border" style="max-height: 140px; object-fit: contain;" onerror="this.src='https://via.placeholder.com/150?text=Invalid+Image'">
+                            <img src="${order.slipUrl}" class="img-fluid rounded border" style="max-height: 120px; object-fit: contain;" onerror="this.src='https://via.placeholder.com/150?text=Invalid+Image'">
                         </a>
-                        <div class="mt-1"><a href="${order.slipUrl}" target="_blank" class="small text-decoration-none">คลิกดูรูปขนาดเต็ม</a></div>
+                        <div class="mt-1"><a href="${order.slipUrl}" target="_blank" class="small text-decoration-none" style="font-size: 0.7rem;">คลิกดูรูปขนาดเต็ม</a></div>
                     </div>
-                ` : `<div class="mb-3 small text-secondary">ลูกค่ายังไม่ได้แนบสลีป</div>`;
+                ` : `<div class="mb-3 small text-secondary" style="font-size: 0.75rem;">ลูกค่ายังไม่ได้แนบสลีป</div>`;
             }
 
             const modalContent = `
                 <div class="modal fade" id="comprehensiveOrderModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content p-4">
-                            <h5 class="fw-bold mb-3" style="font-size: 1.1rem;"><i class="fa-solid fa-box-open me-2 text-primary"></i>รายละเอียดและจัดการออเดอร์</h5>
+                            <h5 class="fw-bold mb-3" style="font-size: 1.05rem;"><i class="fa-solid fa-box-open me-2 text-primary"></i>รายละเอียดและจัดการออเดอร์</h5>
                             
-                            <div class="bg-light p-2 rounded mb-3 small">
+                            <div class="bg-light p-2 rounded mb-3 small" style="font-size: 0.75rem;">
                                 <div class="fw-bold text-dark mb-1">รหัสออเดอร์: ${orderId}</div>
                                 <div class="text-secondary">อีเมลผู้ซื้อ: ${order.buyerEmail}</div>
                             </div>
@@ -1652,15 +1730,15 @@
                             ${paymentDisplay}
 
                             <div class="mb-3">
-                                <h6 class="fw-bold small text-primary mb-1">รายการสินค้าที่สั่งซื้อ</h6>
-                                <div class="border rounded p-2 bg-white" style="max-height: 100px; overflow-y: auto;">
+                                <h6 class="fw-bold small text-primary mb-1" style="font-size: 0.78rem;">รายการสินค้า</h6>
+                                <div class="border rounded p-2 bg-white" style="max-height: 90px; overflow-y: auto;">
                                     ${itemsHtml}
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <h6 class="fw-bold small text-primary mb-1">ที่อยู่จัดส่งสินค้า</h6>
-                                <div class="border rounded p-2 bg-white small text-secondary">
+                                <h6 class="fw-bold small text-primary mb-1" style="font-size: 0.78rem;">ที่อยู่จัดส่งสินค้า</h6>
+                                <div class="border rounded p-2 bg-white text-secondary" style="font-size: 0.72rem;">
                                     <div><strong>ผู้รับ:</strong> ${addr.name || 'ไม่ระบุ'} (${addr.phone || '-'})</div>
                                     <div><strong>ที่อยู่:</strong> บ้านเลขที่ ${addr.houseNo || ''} ${addr.soi ? 'ซ.'+addr.soi : ''} ${addr.streetMoo || ''} ต.${addr.subdistrict || ''} อ.${addr.district || ''} จ.${addr.province || ''} ${addr.zipcode || ''}</div>
                                 </div>
@@ -1668,7 +1746,7 @@
 
                             <form onsubmit="submitComprehensiveShipping(event, '${orderId}')">
                                 <div class="mb-2">
-                                    <label class="form-label small text-secondary">บริษัทขนส่ง</label>
+                                    <label class="form-label small text-secondary" style="font-size: 0.72rem;">บริษัทขนส่ง</label>
                                     <select class="form-select form-select-sm" id="comp-carrier" required>
                                         <option value="Flash Express" ${order.carrier === 'Flash Express' ? 'selected' : ''}>Flash Express</option>
                                         <option value="Kerry Express (KEX)" ${order.carrier === 'Kerry Express (KEX)' ? 'selected' : ''}>Kerry Express (KEX)</option>
@@ -1678,12 +1756,12 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label small text-secondary">หมายเลขพัสดุ (Tracking No.)</label>
+                                    <label class="form-label small text-secondary" style="font-size: 0.72rem;">หมายเลขพัสดุ (Tracking No.)</label>
                                     <input type="text" class="form-control form-control-sm" id="comp-tracking" value="${order.trackingNo || ''}" required placeholder="เช่น TH123456789">
                                 </div>
                                 <div class="d-flex gap-2">
-                                    <button type="submit" class="btn-primary-warm flex-grow-1 btn-sm py-2">บันทึกเลขพัสดุและส่งของ</button>
-                                    <button type="button" class="btn btn-outline-success flex-grow-1 btn-sm py-2" onclick="updateOrderStatusDirect('${orderId}', 'สำเร็จแล้ว'); bootstrap.Modal.getInstance(document.getElementById('comprehensiveOrderModal')).hide();">เปลี่ยนเป็นสำเร็จ</button>
+                                    <button type="submit" class="btn-primary-warm flex-grow-1 btn-sm py-2" style="font-size: 0.78rem;">บันทึกเลขพัสดุและส่งของ</button>
+                                    <button type="button" class="btn btn-outline-success flex-grow-1 btn-sm py-2" style="font-size: 0.78rem;" onclick="updateOrderStatusDirect('${orderId}', 'สำเร็จแล้ว'); bootstrap.Modal.getInstance(document.getElementById('comprehensiveOrderModal')).hide();">เปลี่ยนเป็นสำเร็จ</button>
                                 </div>
                             </form>
                         </div>
